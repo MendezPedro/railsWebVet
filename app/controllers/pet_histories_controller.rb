@@ -5,30 +5,36 @@ class PetHistoriesController < ApplicationController
   # GET /pet_histories.json
   def index
     @pet_histories = PetHistory.all
+    @pet = Pet.find params[:pet_id]
   end
 
   # GET /pet_histories/1
   # GET /pet_histories/1.json
   def show
+    
   end
 
   # GET /pet_histories/new
   def new
     @pet_history = PetHistory.new
+    @pet = Pet.find params[:pet_id]
   end
 
   # GET /pet_histories/1/edit
   def edit
+    @pet = Pet.find params[:pet_id]
   end
 
   # POST /pet_histories
   # POST /pet_histories.json
   def create
     @pet_history = PetHistory.new(pet_history_params)
-
+    @pet = Pet.find(params[:pet_id])
+    @pet_history.pet = @pet
+    #iban pet con pet_id y pet.id
     respond_to do |format|
       if @pet_history.save
-        format.html { redirect_to @pet_history, notice: 'Pet history was successfully created.' }
+        format.html { redirect_to pet_pet_history_path(@pet_history.pet_id, @pet_history.id), notice: 'Pet history was successfully created.' }
         format.json { render :show, status: :created, location: @pet_history }
       else
         format.html { render :new }
